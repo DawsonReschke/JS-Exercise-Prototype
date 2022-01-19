@@ -39,11 +39,23 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-  
+function Person(name,age) {
+  this.name = name; this.age = age;
+  this.stomach = []
+
 }
 
+Person.prototype.eat = function(food){
+  if(this.stomach.length <10) this.stomach.push(food)
+}
 
+Person.prototype.poop = function(){
+  this.stomach = [] 
+}
+
+Person.prototype.toString = function(){
+  return `${this.name}, ${this.age}`
+}
 
 
 
@@ -63,10 +75,25 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
-  
+function Car(model, milesPerGallon) {
+  this.model = model; this.milesPerGallon = milesPerGallon; 
+  this.tank = 0; this.odometer = 0; 
 }
 
+Car.prototype.fill = function(gallons){
+  this.tank += gallons;
+}
+
+Car.prototype.drive = function(distance){
+  if(this.tank - distance < 0){
+    distance -=this.tank
+    this.tank = 0
+    this.odometer += distance
+    return `I ran out of fuel at ${this.odometer} miles!`
+  }
+  this.odometer += distance;
+  this.tank -= distance; 
+}
 
 /*
   TASK 3
@@ -75,18 +102,23 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
- 
+function Baby(name,age,favoriteToy) {
+  Person.call(this,name,age);
+  this.favoriteToy = favoriteToy; 
+}
+Baby.prototype = {...Person.prototype}
+Baby.prototype.play = function(){
+  return `Playing with ${this.favoriteToy}`
 }
 
 
 /* 
   TASK 4
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. Implicit binding defines what `this` refers to in the case (obj.attribute), this being whatever is on the left of the period (obj)
+  2. Explicit binding defines what `this` refers to in the case (obj.function.call(differentObj)), this being what is the first argument of the `call` function (explicitly defining the object to reference)
+  3. window/global binding defines what `this` refers to in the case where this is called in the global scope  (either a window or console object)
+  4. New binding defines what `this` refers to in the case of using this in a constructor function, when you define a variable with this.var = a, you are declaring that the object which will be returned by the constructor will have an atribute var, with value a
 */
 
 
